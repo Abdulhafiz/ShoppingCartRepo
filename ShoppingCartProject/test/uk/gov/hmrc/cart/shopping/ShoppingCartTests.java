@@ -7,7 +7,6 @@ import java.math.RoundingMode;
 
 import org.junit.Test;
 
-import uk.gov.hmrc.cart.shopping.ShoppingCart;
 
 /**
  * HMRC Java Technical Test
