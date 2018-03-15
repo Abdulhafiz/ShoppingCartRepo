@@ -21,8 +21,7 @@ public class ShoppingCart {
 
 	public void scanItem(Object userInputItem) {
 		generatedId =+ 1L;
-		String inputStr = String.valueOf(userInputItem);
-		Long scannedItemCode = Long.parseLong(inputStr);
+		Long scannedItemCode = validItem(userInputItem);
 		
 		if ( scannedItemCode != null && ItemsEnum.getAllItem().contains(scannedItemCode)) {
 			if (scannedItemCode.longValue() == ItemsEnum.APPLE.getId().longValue()) {
@@ -39,6 +38,21 @@ public class ShoppingCart {
 		} else {
 			System.out.println("This Item does not exist");
 		}
+	}
+	
+	private Long validItem(Object userItem) {
+		Long itemLongValue = null;
+		try {
+			itemLongValue = castObjectToLong(userItem);
+		} catch (NumberFormatException nfe) {
+			System.out.println("Invalid Item");
+			throw new NumberFormatException("This item id is not valid : " + nfe.getMessage());
+		} 		
+		return itemLongValue; 
+	}
+	
+	private Long castObjectToLong(Object object) {
+		return Long.parseLong(object.toString());
 	}
 
 	
