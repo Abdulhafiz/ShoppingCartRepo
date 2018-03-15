@@ -17,6 +17,7 @@ public class OrderedItem {
 	private Long itemCode;
 	private Long offerCode;
 	
+	
 	public OrderedItem (Long itemId, String itemName, BigDecimal itemPrice,Long itemCode) {
 		this.itemId=itemId;
 		this.itemName = itemName;
