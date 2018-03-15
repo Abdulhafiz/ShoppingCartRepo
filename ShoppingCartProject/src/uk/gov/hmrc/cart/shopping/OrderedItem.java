@@ -17,7 +17,7 @@ public class OrderedItem {
 	private Long itemCode;
 	private Long offerCode;
 	
-	public Item(Long itemId, String itemName, BigDecimal itemPrice,Long itemCode) {
+	public OrderedItem (Long itemId, String itemName, BigDecimal itemPrice,Long itemCode) {
 		this.itemId=itemId;
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;	
@@ -49,8 +49,8 @@ public class OrderedItem {
 	}
 
 	public boolean equals(Object o){
-	    if (o instanceof Item){
-	    	Item temp = (Item)o;
+	    if (o instanceof OrderedItem ){
+	    	OrderedItem  temp = (OrderedItem )o;
 	        if (this.itemName.equals(temp.getItemName()))
 	            return true;
 	    }
