@@ -76,6 +76,10 @@ public class CartTests {
 		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
 	}
 	
+	@Test
+	public void testApplyOffer() {
+			}
+	
 	
 
 	private Cart scanItem() {

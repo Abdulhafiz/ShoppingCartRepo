@@ -27,14 +27,14 @@ public class Cart {
 			if (scannedItemCode.longValue() == ItemsEnum.APPLE.getId().longValue()) {
 				OrderedItem item = new OrderedItem(generatedId, "Apple", new BigDecimal(0.60), scannedItemCode);
 				if(checkOffer(ItemsEnum.APPLE)){
-					item.setOfferCode(ItemsEnum.APPLE.getOfferCode());
+					item.setOfferCode(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode());
 				}
 				basket.add(item);
 
 			} else if (scannedItemCode == ItemsEnum.ORANGE.getId()) {
 				OrderedItem item = new OrderedItem(generatedId, "Orange", new BigDecimal(0.25), scannedItemCode);
 				if(checkOffer(ItemsEnum.ORANGE)){
-					item.setOfferCode(ItemsEnum.ORANGE.getOfferCode());
+					item.setOfferCode(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode());
 				}
 				basket.add(item);
 

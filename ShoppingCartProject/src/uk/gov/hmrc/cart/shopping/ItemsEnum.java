@@ -5,17 +5,16 @@ import java.util.HashSet;
 
 public enum ItemsEnum {
 	
-	APPLE (1L, new BigDecimal(Double.toString(0.60)), 101L), 
-	ORANGE (2L, new BigDecimal(Double.toString(0.25)), 202L);
+	APPLE (1L, new BigDecimal(Double.toString(0.60))), 
+	ORANGE (2L, new BigDecimal(Double.toString(0.25)));
 	
 	private Long id;
 	private BigDecimal price;
-	private Long offerCode;
 	
-	private ItemsEnum(Long id, BigDecimal price, Long offerCode) {
+	private ItemsEnum(Long id, BigDecimal price) {
 		this.price = price;
 		this.id = id;
-		this.offerCode = offerCode;
+		
 	}
 
 	public BigDecimal getPrice() {
@@ -34,12 +33,6 @@ public enum ItemsEnum {
 		this.id = id;
 	}
 	
-	public void setOfferCode(Long offerCode) {
-		this.offerCode = offerCode; 
-	}
-	public Long getOfferCode() {
-		return offerCode; 
-	}
 	public static HashSet<Long> getAllItem() {
 		HashSet<Long> ids = new HashSet<Long>();
 		
