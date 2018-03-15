@@ -77,6 +77,11 @@ public class CartTests {
 	}
 	
 	
+	@Test
+	public void testApplyOffer() {
+			}
+	
+	
 
 	private Cart scanItem() {
 		Cart classUnderTest = new Cart();
