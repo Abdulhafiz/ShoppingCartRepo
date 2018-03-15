@@ -15,7 +15,7 @@ import org.junit.Test;
  *
  */
 
-public class ShoppingCartTests {
+public class CartTests {
 
 	/*
 	 * Apple 60p and Orange 25p per piece
@@ -23,7 +23,7 @@ public class ShoppingCartTests {
 
 	@Test
 	public void testScanItem() {
-		ShoppingCart classUnderTest = scanItem();
+		Cart classUnderTest = scanItem();
 
 		assertEquals(5, classUnderTest.getBasket().size());
 	}
@@ -31,7 +31,7 @@ public class ShoppingCartTests {
 	@Test
 	public void testScanRightItem() {
 
-		ShoppingCart classUnderTest = new ShoppingCart();
+		Cart classUnderTest = new Cart();
 
 		classUnderTest.scanItem(1L);
 		classUnderTest.scanItem(2L);
@@ -42,7 +42,7 @@ public class ShoppingCartTests {
 	@Test
 	public void testScanWrongItemNum() {
 
-		ShoppingCart classUnderTest = new ShoppingCart();
+		Cart classUnderTest = new Cart();
 
 		classUnderTest.scanItem(4L);
 
@@ -52,14 +52,14 @@ public class ShoppingCartTests {
 	@Test(expected = NumberFormatException.class)
 	public void testScanInvalidItem() {
 
-		ShoppingCart classUnderTest = new ShoppingCart();
+		Cart classUnderTest = new Cart();
 
 		classUnderTest.scanItem("AZ12");
 	}
 	
 	@Test
 	public void testChechout() {
-		ShoppingCart classUnderTest = scanItem();
+		Cart classUnderTest = scanItem();
 
 		BigDecimal totalPrice = classUnderTest.chechout(classUnderTest.getBasket());
 
@@ -68,7 +68,7 @@ public class ShoppingCartTests {
 	
 	@Test
 	public void testCheckOffer() {
-		ShoppingCart classUnderTest = new ShoppingCart();
+		Cart classUnderTest = new Cart();
 		classUnderTest.scanItem(1L);
 		classUnderTest.scanItem(2L);
 
@@ -78,8 +78,8 @@ public class ShoppingCartTests {
 	
 	
 
-	private ShoppingCart scanItem() {
-		ShoppingCart classUnderTest = new ShoppingCart();
+	private Cart scanItem() {
+		Cart classUnderTest = new Cart();
 		classUnderTest.scanItem(1L);
 		classUnderTest.scanItem(2L);
 		classUnderTest.scanItem(1L);

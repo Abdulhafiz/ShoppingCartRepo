@@ -82,6 +82,4 @@ public class Cart {
 		this.basket = basket;
 	}
 
-	
-	
 }
