@@ -9,7 +9,7 @@ package uk.gov.hmrc.cart.shopping;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Item {
+public class OrderedItem {
 	
 	private Long itemId;	
 	private String itemName;	
