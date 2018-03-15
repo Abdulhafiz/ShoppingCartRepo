@@ -15,6 +15,7 @@ public class Item {
 	private String itemName;	
 	private BigDecimal itemPrice;
 	private Long itemCode;
+	private Long offerCode;
 	
 	public Item(Long itemId, String itemName, BigDecimal itemPrice,Long itemCode) {
 		this.itemId=itemId;
@@ -67,6 +68,14 @@ public class Item {
 
 	public void setItemCode(Long itemCode) {
 		this.itemCode = itemCode;
+	}
+	
+	public Long getOfferCode() {
+		return offerCode;
+	}
+
+	public void setOfferCode(Long offerCode) {
+		this.offerCode = offerCode;
 	}
 
 	

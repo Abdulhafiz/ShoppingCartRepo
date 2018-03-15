@@ -20,26 +20,30 @@ public class ShoppingCart {
 	static Long generatedId = null;
 
 	public void scanItem(Object userInputItem) {
-		generatedId =+ 1L;
+		generatedId = +1L;
 		Long scannedItemCode = validItem(userInputItem);
-		
-		if ( scannedItemCode != null && ItemsEnum.getAllItem().contains(scannedItemCode)) {
+
+		if (scannedItemCode != null && ItemsEnum.getAllItem().contains(scannedItemCode)) {
 			if (scannedItemCode.longValue() == ItemsEnum.APPLE.getId().longValue()) {
-				Item item = new Item(generatedId, "Apple", new BigDecimal(0.60), scannedItemCode);			
-				
+				Item item = new Item(generatedId, "Apple", new BigDecimal(0.60), scannedItemCode);
+				if(checkOffer(ItemsEnum.APPLE)){
+					item.setOfferCode(ItemsEnum.APPLE.getOfferCode());
+				}
 				basket.add(item);
-				
+
 			} else if (scannedItemCode == ItemsEnum.ORANGE.getId()) {
-				Item item = new Item(generatedId, "Orange", new BigDecimal(0.25), scannedItemCode);				
-						
+				Item item = new Item(generatedId, "Orange", new BigDecimal(0.25), scannedItemCode);
+				if(checkOffer(ItemsEnum.ORANGE)){
+					item.setOfferCode(ItemsEnum.ORANGE.getOfferCode());
+				}
 				basket.add(item);
-				
+
 			}
 		} else {
 			System.out.println("This Item does not exist");
 		}
 	}
-	
+
 	private Long validItem(Object userItem) {
 		Long itemLongValue = null;
 		try {
@@ -47,14 +51,14 @@ public class ShoppingCart {
 		} catch (NumberFormatException nfe) {
 			System.out.println("Invalid Item");
 			throw new NumberFormatException("This item id is not valid : " + nfe.getMessage());
-		} 		
-		return itemLongValue; 
+		}
+		return itemLongValue;
 	}
-	
+
 	private Long castObjectToLong(Object object) {
 		return Long.parseLong(object.toString());
 	}
-	
+
 	public BigDecimal chechout(List<Item> itemList) {
 		BigDecimal totalPrice = new BigDecimal(0);
 
@@ -64,7 +68,12 @@ public class ShoppingCart {
 		return totalPrice.setScale(2, RoundingMode.CEILING);
 	}
 
-	
+	public boolean checkOffer(ItemsEnum dbItem) {
+
+		return dbItem.getOfferCode() != null && dbItem.getOfferCode().longValue() > 0;
+
+	}
+
 	public List<Item> getBasket() {
 		return basket;
 	}
@@ -72,6 +81,5 @@ public class ShoppingCart {
 	public void setBasket(List<Item> basket) {
 		this.basket = basket;
 	}
-	
 
 }

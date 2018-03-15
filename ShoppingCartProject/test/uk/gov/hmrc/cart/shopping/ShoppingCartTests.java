@@ -66,6 +66,18 @@ public class ShoppingCartTests {
 
 		assertTrue(new BigDecimal(1.95).setScale(2, RoundingMode.CEILING).compareTo(totalPrice) == 0);
 	}
+	
+	@Test
+	public void testCheckOffer() {
+		ShoppingCart classUnderTest = new ShoppingCart();
+		classUnderTest.scanItem(1L);
+		classUnderTest.scanItem(2L);
+
+		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
+		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
+	}
+	
+	
 
 	private ShoppingCart scanItem() {
 		ShoppingCart classUnderTest = new ShoppingCart();

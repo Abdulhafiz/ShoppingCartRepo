@@ -20,7 +20,7 @@ public enum OfferEnum {
 		this.offerCode = code;
 	}
 	
-	public static HashSet<Long> getAllOfferedItem() {
+	public static HashSet<Long> getAllOffer() {
 		HashSet<Long> offerItems = new HashSet<Long>();
 		
 		for (OfferEnum c : OfferEnum.values()) {
