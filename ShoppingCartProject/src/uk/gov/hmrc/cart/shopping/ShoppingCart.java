@@ -54,6 +54,15 @@ public class ShoppingCart {
 	private Long castObjectToLong(Object object) {
 		return Long.parseLong(object.toString());
 	}
+	
+	public BigDecimal chechout(List<Item> itemList) {
+		BigDecimal totalPrice = new BigDecimal(0);
+
+		for (Item item : basket) {
+			totalPrice = totalPrice.add(item.getItemPrice());
+		}
+		return totalPrice.setScale(2, RoundingMode.CEILING);
+	}
 
 	
 	public List<Item> getBasket() {

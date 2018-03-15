@@ -2,6 +2,8 @@ package uk.gov.hmrc.cart.shopping;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.junit.Test;
 
@@ -56,7 +58,14 @@ public class ShoppingCartTests {
 		classUnderTest.scanItem("AZ12");
 	}
 	
-	
+	@Test
+	public void testChechout() {
+		ShoppingCart classUnderTest = scanItem();
+
+		BigDecimal totalPrice = classUnderTest.chechout(classUnderTest.getBasket());
+
+		assertTrue(new BigDecimal(1.95).setScale(2, RoundingMode.CEILING).compareTo(totalPrice) == 0);
+	}
 
 	private ShoppingCart scanItem() {
 		ShoppingCart classUnderTest = new ShoppingCart();
