@@ -3,9 +3,8 @@ package uk.gov.hmrc.cart.shopping;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * HMRC Java Technical Test
@@ -14,6 +13,7 @@ import java.util.Set;
  *
  */
 public class Cart {
+	private final static Logger LOGGER = Logger.getLogger(Cart.class.getName());
 
 	List<OrderedItem> basket = new ArrayList<OrderedItem>();
 
@@ -24,32 +24,30 @@ public class Cart {
 		Long scannedItemCode = validItem(userInputItem);
 
 		if (scannedItemCode != null && ItemsEnum.getAllItem().contains(scannedItemCode)) {
-			if (scannedItemCode.longValue() == ItemsEnum.APPLE.getId().longValue()) {
+			if (scannedItemCode.longValue() == ItemsEnum.APPLE.getCode().longValue()) {
 				OrderedItem item = new OrderedItem(generatedId, "Apple", new BigDecimal(0.60), scannedItemCode);
-				if(checkOffer(ItemsEnum.APPLE)){
-					item.setOfferCode(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode());
-				}
+
 				basket.add(item);
 
-			} else if (scannedItemCode == ItemsEnum.ORANGE.getId()) {
+			} else if (scannedItemCode == ItemsEnum.ORANGE.getCode()) {
 				OrderedItem item = new OrderedItem(generatedId, "Orange", new BigDecimal(0.25), scannedItemCode);
-				if(checkOffer(ItemsEnum.ORANGE)){
-					item.setOfferCode(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode());
-				}
+
 				basket.add(item);
 
 			}
 		} else {
-			System.out.println("This Item does not exist");
+			LOGGER.info("This Item does not exist");
 		}
 	}
+
+	
 
 	private Long validItem(Object userItem) {
 		Long itemLongValue = null;
 		try {
 			itemLongValue = castObjectToLong(userItem);
 		} catch (NumberFormatException nfe) {
-			System.out.println("Invalid Item");
+			LOGGER.warning("Invalid Item");
 			throw new NumberFormatException("This item id is not valid : " + nfe.getMessage());
 		}
 		return itemLongValue;
@@ -67,11 +65,25 @@ public class Cart {
 		}
 		return totalPrice.setScale(2, RoundingMode.CEILING);
 	}
+	
+	public void applyOffer(List<OrderedItem> basket, Long offerCode, long itemCode) {
+		
+		for(OrderedItem item : basket){
+			if (item.getItemCode().longValue() == itemCode && ItemsEnum.APPLE.getCode() == itemCode
+					&& OfferEnum.BUY_ONE_GET_ONE_FREE.getCode() == offerCode){
+				item.setOfferCode(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode());
+			}
+			
+			if (item.getItemCode().longValue() == itemCode && ItemsEnum.ORANGE.getCode() == itemCode
+					&& OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode() == offerCode){
+				item.setOfferCode(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode());
+			}
+		}		
+	}
 
-	public boolean checkOffer(ItemsEnum dbItem) {
-
-		return dbItem.getOfferCode() != null && dbItem.getOfferCode().longValue() > 0;
-
+	public boolean checkOffer(OrderedItem item) {
+		
+		return item.getOfferCode() != null && item.getOfferCode().longValue() > 0;
 	}
 
 	public List<OrderedItem> getBasket() {

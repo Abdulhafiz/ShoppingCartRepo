@@ -17,6 +17,10 @@ import org.junit.Test;
 
 public class CartTests {
 
+	private static final long ORANGE = 2L;
+	private static final long APPLE = 1L;
+
+
 	/*
 	 * Apple 60p and Orange 25p per piece
 	 */
@@ -58,7 +62,7 @@ public class CartTests {
 	}
 	
 	@Test
-	public void testChechout() {
+	public void testChechoutTotlBeforeOffer() {
 		Cart classUnderTest = scanItem();
 
 		BigDecimal totalPrice = classUnderTest.chechout(classUnderTest.getBasket());
@@ -67,20 +71,44 @@ public class CartTests {
 	}
 	
 	@Test
+	public void testApplyOfferOnApple() {
+		Cart classUnderTest = new Cart();
+		classUnderTest.scanItem(APPLE);
+		classUnderTest.scanItem(ORANGE);
+		
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), APPLE);
+		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
+		assertNotEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
+	}
+	
+	@Test
+	public void testApplyOfferOnOrange() {
+		Cart classUnderTest = new Cart();
+		classUnderTest.scanItem(APPLE);
+		classUnderTest.scanItem(ORANGE);
+		
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
+		assertNotEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
+		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
+	}
+	
+	@Test
 	public void testCheckOffer() {
 		Cart classUnderTest = new Cart();
 		classUnderTest.scanItem(1L);
 		classUnderTest.scanItem(2L);
 
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), APPLE);
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
+		
 		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
 		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
 	}
 	
-
 	@Test
-	public void testApplyOffer() {
-			}
+	public void testChechoutTotlAfterOffer() {
 	
+	}
 	
 
 	private Cart scanItem() {

@@ -8,12 +8,12 @@ public enum ItemsEnum {
 	APPLE (1L, new BigDecimal(Double.toString(0.60))), 
 	ORANGE (2L, new BigDecimal(Double.toString(0.25)));
 	
-	private Long id;
+	private Long code;
 	private BigDecimal price;
 	
-	private ItemsEnum(Long id, BigDecimal price) {
+	private ItemsEnum(Long code, BigDecimal price) {
 		this.price = price;
-		this.id = id;
+		this.code = code;
 		
 	}
 
@@ -21,23 +21,23 @@ public enum ItemsEnum {
 		return price;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getCode() {
+		return code;
 	}
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setCode(Long id) {
+		this.code = id;
 	}
 	
 	public static HashSet<Long> getAllItem() {
 		HashSet<Long> ids = new HashSet<Long>();
 		
 		for (ItemsEnum c : ItemsEnum.values()) {
-			ids.add(c.getId());
+			ids.add(c.getCode());
 		}
 		return ids;
 	}
