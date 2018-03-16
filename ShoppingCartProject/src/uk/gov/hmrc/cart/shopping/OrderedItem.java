@@ -10,19 +10,18 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class OrderedItem {
-	
-	private Long itemId;	
-	private String itemName;	
+
+	private Long itemId;
+	private String itemName;
 	private BigDecimal itemPrice;
 	private Long itemCode;
 	private Long offerCode;
-	
-	
-	public OrderedItem (Long itemId, String itemName, BigDecimal itemPrice,Long itemCode) {
-		this.itemId=itemId;
+
+	public OrderedItem(Long itemId, String itemName, BigDecimal itemPrice, Long itemCode) {
+		this.itemId = itemId;
 		this.itemName = itemName;
-		this.itemPrice = itemPrice;	
-		this.itemCode = itemCode;	
+		this.itemPrice = itemPrice;
+		this.itemCode = itemCode;
 	}
 
 	public String getItemName() {
@@ -40,7 +39,7 @@ public class OrderedItem {
 	public void setItemPrice(BigDecimal itemPrice) {
 		this.itemPrice = itemPrice;
 	}
-	
+
 	public Long getItemId() {
 		return itemId;
 	}
@@ -71,7 +70,7 @@ public class OrderedItem {
 	public void setItemCode(Long itemCode) {
 		this.itemCode = itemCode;
 	}
-	
+
 	public Long getOfferCode() {
 		return offerCode;
 	}
@@ -80,5 +79,4 @@ public class OrderedItem {
 		this.offerCode = offerCode;
 	}
 
-	
 }

@@ -69,7 +69,7 @@ public class CartTests {
 
 		assertTrue(new BigDecimal(1.95).setScale(2, RoundingMode.CEILING).compareTo(totalPrice) == 0);
 	}
-	
+
 	@Test
 	public void testApplyOfferOnApple() {
 		Cart classUnderTest = new Cart();
@@ -80,7 +80,7 @@ public class CartTests {
 		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
 		assertNotEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
 	}
-	
+
 	@Test
 	public void testApplyOfferOnOrange() {
 		Cart classUnderTest = new Cart();
@@ -91,7 +91,6 @@ public class CartTests {
 		assertNotEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
 		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
 	}
-	
 
 	@Test
 	public void testCheckOffer() {
@@ -105,7 +104,6 @@ public class CartTests {
 		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
 		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
 	}
-	
 
 	@Test
 	public void testGetItemAndQuantity() {
@@ -129,12 +127,65 @@ public class CartTests {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
+
+	@Test
+	public void testTotalAmountAfterAppleOffer2Ap3Or() {
+		Cart classUnderTest = scanItem2Ap3Or();
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), APPLE);
+
+		Map<OrderedItem, Long> itemAndQuantity = classUnderTest.getItemAndQuantity(classUnderTest.getBasket());
+
+		BigDecimal totalAmountAFterOffer = classUnderTest.calculateTotalAmountAfterOffer(itemAndQuantity);
+
+		assertEquals(format2Decimal(new BigDecimal(1.35)), format2Decimal(totalAmountAFterOffer));
+
+	}
+
+	@Test
+	public void testTotalAmountAfterAppleOffer() {
+		Cart classUnderTest = scanItem3Ap4Or();
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), APPLE);
+
+		Map<OrderedItem, Long> itemAndQuantity = classUnderTest.getItemAndQuantity(classUnderTest.getBasket());
+
+		BigDecimal totalAmountAFterOffer = classUnderTest.calculateTotalAmountAfterOffer(itemAndQuantity);
+
+		assertEquals(format2Decimal(new BigDecimal(2.2)), format2Decimal(totalAmountAFterOffer));
+
+	}
+
+	@Test
+	public void testTotalAmountAfterOrangeOffer2Ap3Or() {
+
+		Cart classUnderTest = scanItem2Ap3Or();
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
+
+		Map<OrderedItem, Long> itemAndQuantity = classUnderTest.getItemAndQuantity(classUnderTest.getBasket());
+
+		BigDecimal totalAmountAFterOffer = classUnderTest.calculateTotalAmountAfterOffer(itemAndQuantity);
+
+		assertEquals(format2Decimal(new BigDecimal(1.70)), format2Decimal(totalAmountAFterOffer));
+
+	}
+
+	@Test
+	public void testTotalAmountAfterOrangeOffer3Ap4Or() {
+
+		Cart classUnderTest = scanItem3Ap4Or();
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
+
+		Map<OrderedItem, Long> itemAndQuantity = classUnderTest.getItemAndQuantity(classUnderTest.getBasket());
+
+		BigDecimal totalAmountAFterOffer = classUnderTest.calculateTotalAmountAfterOffer(itemAndQuantity);
+
+		assertEquals(format2Decimal(new BigDecimal(2.55)), format2Decimal(totalAmountAFterOffer));
+
+	}
+
+	private BigDecimal format2Decimal(BigDecimal bigDecObj) {
+		return bigDecObj.setScale(2, RoundingMode.HALF_UP);
+
+	}
 
 	private Cart scanItem2Ap3Or() {
 		Cart classUnderTest = new Cart();

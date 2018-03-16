@@ -83,27 +83,87 @@ public class Cart {
 			}
 		}
 	}
-	
 
 	public boolean checkOffer(OrderedItem item) {
-		
+
 		return item.getOfferCode() != null && item.getOfferCode().longValue() > 0;
 	}
-	
+
 	public Map<OrderedItem, Long> getItemAndQuantity(List<OrderedItem> basket) {
 
 		Map<OrderedItem, Long> totalNumOfEachItem = new HashMap<OrderedItem, Long>();
-		
+
 		for (OrderedItem item : basket) {
 
 			if (!totalNumOfEachItem.containsKey(item)) {
-					
-					Long quantity = Long.valueOf(Collections.frequency(basket, item));
-					
-					totalNumOfEachItem.put(item, quantity);
+
+				Long quantity = Long.valueOf(Collections.frequency(basket, item));
+
+				totalNumOfEachItem.put(item, quantity);
 			}
 		}
-		return totalNumOfEachItem;	
+		return totalNumOfEachItem;
+	}
+
+	public BigDecimal calculateTotalAmountAfterOffer(Map<OrderedItem, Long> itemAndQuantity) {
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		Iterator<Map.Entry<OrderedItem, Long>> it = itemAndQuantity.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<OrderedItem, Long> pair = it.next();
+
+			if (pair.getKey().getOfferCode() == null || pair.getKey().getOfferCode().longValue() <= 0L) {
+				totalAmount = totalAmount.add(unOfferedItem(pair));
+			} else {
+				totalAmount = totalAmount.add(calculateBuyOneGetOneFreeOffer(pair));
+
+				totalAmount = totalAmount.add(calculateThreeForTwoOffer(pair));
+			}
+
+		}
+		return totalAmount;
+	}
+
+	private BigDecimal unOfferedItem(Entry<OrderedItem, Long> pair) {
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		totalAmount = totalAmount
+				.add(new BigDecimal(pair.getValue().longValue()).multiply(pair.getKey().getItemPrice()));
+
+		return totalAmount;
+	}
+
+	private BigDecimal calculateBuyOneGetOneFreeOffer(Map.Entry<OrderedItem, Long> pair) {
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		if (pair.getKey().getItemCode().longValue() == ItemsEnum.APPLE.getCode().longValue()
+				&& pair.getKey().getOfferCode().longValue() == OfferEnum.BUY_ONE_GET_ONE_FREE.getCode().longValue()) {
+
+			if (pair.getValue().longValue() % 2 == 0) {
+				totalAmount = totalAmount
+						.add(new BigDecimal(pair.getValue().longValue() / 2).multiply(new BigDecimal(0.60)));
+			} else {
+
+				if (pair.getValue().longValue() == 1L) {
+					totalAmount = totalAmount.add(new BigDecimal(0.60));
+				} else {
+					totalAmount = totalAmount.add(new BigDecimal(0.60));
+					totalAmount = totalAmount
+							.add(new BigDecimal((pair.getValue().longValue() - 1) / 2).multiply(new BigDecimal(0.60)));
+				}
+			}
+		}
+		return totalAmount;
+	}
+
+	private BigDecimal calculateThreeForTwoOffer(Entry<OrderedItem, Long> pair) {
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		if (pair.getKey().getItemCode().longValue() == ItemsEnum.ORANGE.getCode().longValue()
+				&& pair.getKey().getOfferCode().longValue() == OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode().longValue()) {
+
+			long totalOfferedQuantity = ((pair.getValue().longValue() / 3) * 2) + (pair.getValue().longValue() % 3);
+
+			totalAmount = totalAmount.add(new BigDecimal(totalOfferedQuantity).multiply(new BigDecimal(0.25)));
+
+		}
+		return totalAmount;
 	}
 
 	public List<OrderedItem> getBasket() {
