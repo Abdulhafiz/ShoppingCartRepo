@@ -83,6 +83,28 @@ public class Cart {
 			}
 		}
 	}
+	
+
+	public boolean checkOffer(OrderedItem item) {
+		
+		return item.getOfferCode() != null && item.getOfferCode().longValue() > 0;
+	}
+	
+	public Map<OrderedItem, Long> getItemAndQuantity(List<OrderedItem> basket) {
+
+		Map<OrderedItem, Long> totalNumOfEachItem = new HashMap<OrderedItem, Long>();
+		
+		for (OrderedItem item : basket) {
+
+			if (!totalNumOfEachItem.containsKey(item)) {
+					
+					Long quantity = Long.valueOf(Collections.frequency(basket, item));
+					
+					totalNumOfEachItem.put(item, quantity);
+			}
+		}
+		return totalNumOfEachItem;	
+	}
 
 	public List<OrderedItem> getBasket() {
 		return basket;

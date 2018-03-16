@@ -80,6 +80,58 @@ public class CartTests {
 		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
 		assertNotEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
 	}
+	
+	@Test
+	public void testApplyOfferOnOrange() {
+		Cart classUnderTest = new Cart();
+		classUnderTest.scanItem(APPLE);
+		classUnderTest.scanItem(ORANGE);
+
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
+		assertNotEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
+		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
+	}
+	
+
+	@Test
+	public void testCheckOffer() {
+		Cart classUnderTest = new Cart();
+		classUnderTest.scanItem(1L);
+		classUnderTest.scanItem(2L);
+
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), APPLE);
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
+
+		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
+		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
+	}
+	
+
+	@Test
+	public void testGetItemAndQuantity() {
+		Cart classUnderTest = scanItem2Ap3Or();
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), APPLE);
+		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
+
+		Map<OrderedItem, Long> itemAndQuantity = classUnderTest.getItemAndQuantity(classUnderTest.getBasket());
+		assertTrue(itemAndQuantity.size() == 2);
+
+		Iterator<Map.Entry<OrderedItem, Long>> it = itemAndQuantity.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<OrderedItem, Long> pair = it.next();
+
+			if (pair.getKey().getItemCode().longValue() == APPLE) {
+				assertEquals(new Long(2), pair.getValue());
+			}
+
+			if (pair.getKey().getItemCode().longValue() == ORANGE) {
+				assertEquals(new Long(3), pair.getValue());
+			}
+		}
+	}
+	
+	
+	
 
 	private Cart scanItem2Ap3Or() {
 		Cart classUnderTest = new Cart();
