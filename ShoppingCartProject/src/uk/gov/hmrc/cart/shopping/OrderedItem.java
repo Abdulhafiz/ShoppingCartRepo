@@ -49,18 +49,19 @@ public class OrderedItem {
 		this.itemId = itemId;
 	}
 
-	public boolean equals(Object o){
-	    if (o instanceof OrderedItem ){
-	    	OrderedItem  temp = (OrderedItem )o;
-	        if (this.itemName.equals(temp.getItemName()))
-	            return true;
-	    }
-	    return false;
-	}
-	
 	@Override
-	public int hashCode(){
-	    return Objects.hashCode(this.itemName);
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		else if (this == obj)
+			return true;
+		else
+			return this.hashCode() == ((OrderedItem) obj).hashCode();
+	}
+
+	@Override
+	public int hashCode() {
+		return this.itemCode.intValue();
 	}
 
 	public Long getItemCode() {

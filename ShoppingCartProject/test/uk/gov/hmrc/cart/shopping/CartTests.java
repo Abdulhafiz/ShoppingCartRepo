@@ -4,9 +4,10 @@ import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.junit.Test;
-
 
 /**
  * HMRC Java Technical Test
@@ -20,18 +21,17 @@ public class CartTests {
 	private static final long ORANGE = 2L;
 	private static final long APPLE = 1L;
 
-
 	/*
 	 * Apple 60p and Orange 25p per piece
 	 */
 
 	@Test
 	public void testScanItem() {
-		Cart classUnderTest = scanItem();
+		Cart classUnderTest = scanItem2Ap3Or();
 
 		assertEquals(5, classUnderTest.getBasket().size());
 	}
-	
+
 	@Test
 	public void testScanRightItem() {
 
@@ -42,7 +42,7 @@ public class CartTests {
 
 		assertEquals(2, classUnderTest.getBasket().size());
 	}
-	
+
 	@Test
 	public void testScanWrongItemNum() {
 
@@ -52,7 +52,7 @@ public class CartTests {
 
 		assertEquals(0, classUnderTest.getBasket().size());
 	}
-	
+
 	@Test(expected = NumberFormatException.class)
 	public void testScanInvalidItem() {
 
@@ -60,10 +60,10 @@ public class CartTests {
 
 		classUnderTest.scanItem("AZ12");
 	}
-	
+
 	@Test
 	public void testChechoutTotlBeforeOffer() {
-		Cart classUnderTest = scanItem();
+		Cart classUnderTest = scanItem2Ap3Or();
 
 		BigDecimal totalPrice = classUnderTest.chechout(classUnderTest.getBasket());
 
@@ -75,48 +75,30 @@ public class CartTests {
 		Cart classUnderTest = new Cart();
 		classUnderTest.scanItem(APPLE);
 		classUnderTest.scanItem(ORANGE);
-		
+
 		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), APPLE);
 		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
 		assertNotEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
 	}
-	
-	@Test
-	public void testApplyOfferOnOrange() {
-		Cart classUnderTest = new Cart();
-		classUnderTest.scanItem(APPLE);
-		classUnderTest.scanItem(ORANGE);
-		
-		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
-		assertNotEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
-		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
-	}
-	
-	@Test
-	public void testCheckOffer() {
-		Cart classUnderTest = new Cart();
-		classUnderTest.scanItem(1L);
-		classUnderTest.scanItem(2L);
 
-		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), APPLE);
-		classUnderTest.applyOffer(classUnderTest.getBasket(), OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), ORANGE);
-		
-		assertEquals(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode(), classUnderTest.getBasket().get(0).getOfferCode());
-		assertEquals(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode(), classUnderTest.getBasket().get(1).getOfferCode());
-	}
-	
-	@Test
-	public void testChechoutTotlAfterOffer() {
-	
-	}
-	
-
-	private Cart scanItem() {
+	private Cart scanItem2Ap3Or() {
 		Cart classUnderTest = new Cart();
 		classUnderTest.scanItem(1L);
 		classUnderTest.scanItem(2L);
 		classUnderTest.scanItem(1L);
 		classUnderTest.scanItem(2L);
+		classUnderTest.scanItem(2L);
+		return classUnderTest;
+	}
+
+	private Cart scanItem3Ap4Or() {
+		Cart classUnderTest = new Cart();
+		classUnderTest.scanItem(1L);
+		classUnderTest.scanItem(2L);
+		classUnderTest.scanItem(1L);
+		classUnderTest.scanItem(2L);
+		classUnderTest.scanItem(2L);
+		classUnderTest.scanItem(1L);
 		classUnderTest.scanItem(2L);
 		return classUnderTest;
 	}

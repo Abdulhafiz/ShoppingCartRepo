@@ -3,7 +3,12 @@ package uk.gov.hmrc.cart.shopping;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 /**
@@ -40,8 +45,6 @@ public class Cart {
 		}
 	}
 
-	
-
 	private Long validItem(Object userItem) {
 		Long itemLongValue = null;
 		try {
@@ -65,25 +68,20 @@ public class Cart {
 		}
 		return totalPrice.setScale(2, RoundingMode.CEILING);
 	}
-	
+
 	public void applyOffer(List<OrderedItem> basket, Long offerCode, long itemCode) {
-		
-		for(OrderedItem item : basket){
+
+		for (OrderedItem item : basket) {
 			if (item.getItemCode().longValue() == itemCode && ItemsEnum.APPLE.getCode() == itemCode
-					&& OfferEnum.BUY_ONE_GET_ONE_FREE.getCode() == offerCode){
+					&& OfferEnum.BUY_ONE_GET_ONE_FREE.getCode() == offerCode) {
 				item.setOfferCode(OfferEnum.BUY_ONE_GET_ONE_FREE.getCode());
 			}
-			
+
 			if (item.getItemCode().longValue() == itemCode && ItemsEnum.ORANGE.getCode() == itemCode
-					&& OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode() == offerCode){
+					&& OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode() == offerCode) {
 				item.setOfferCode(OfferEnum.THRE_FOR_THE_PRICE_TWO.getCode());
 			}
-		}		
-	}
-
-	public boolean checkOffer(OrderedItem item) {
-		
-		return item.getOfferCode() != null && item.getOfferCode().longValue() > 0;
+		}
 	}
 
 	public List<OrderedItem> getBasket() {
